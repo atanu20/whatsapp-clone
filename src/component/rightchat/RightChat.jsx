@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axios from 'axios';
+import { apilink } from '../../data/fdata';
 
 const RightChat = ({ getmyConv, onlineUser }) => {
   const [account] = useContext(FromContext);
@@ -11,9 +12,7 @@ const RightChat = ({ getmyConv, onlineUser }) => {
   const [search, setSearch] = useState('');
 
   const getuser = async () => {
-    const res = await axios.get(
-      'https://whatsapp-clone-node-production.up.railway.app/alluser'
-    );
+    const res = await axios.get(`${apilink}/alluser`);
     setData(res.data.filter((val) => val._id !== account.userID));
   };
 
@@ -38,10 +37,7 @@ const RightChat = ({ getmyConv, onlineUser }) => {
       senderId: account.userID,
       receiverId: id,
     };
-    const res = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/conversationroom',
-      data
-    );
+    const res = await axios.post(`${apilink}/conversationroom`, data);
     // console.log(res.data)
     notify(res.data.msg);
     getmyConv();
