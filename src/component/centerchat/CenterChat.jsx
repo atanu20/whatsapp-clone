@@ -5,6 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { io } from 'socket.io-client';
+import { apilink } from '../../data/fdata';
 
 const CenterChat = ({
   downshow,
@@ -33,18 +34,12 @@ const CenterChat = ({
   const [friendId, setFriendId] = useState('');
 
   const getConDetails = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/conversationid/${conversationId}`
-    );
+    const res = await axios.get(`${apilink}/conversationid/${conversationId}`);
 
     const receiverId = res.data.members.find((member) => member !== whatsappId);
     if (receiverId) {
-      const ress = await axios.get(
-        `https://whatsapp-clone-node-production.up.railway.app/userById/${receiverId}`
-      );
-      const rs = await axios.get(
-        `https://whatsapp-clone-node-production.up.railway.app/checkPremium/${receiverId}`
-      );
+      const ress = await axios.get(`${apilink}/userById/${receiverId}`);
+      const rs = await axios.get(`${apilink}/checkPremium/${receiverId}`);
       setUser(ress.data);
       setFriendId(receiverId);
       // console.log(rs.data)
@@ -57,7 +52,7 @@ const CenterChat = ({
   //   const checkPremium=async()=>{
   //     if(friendId)
   //     {
-  //       const res=await axios.get(`https://whatsapp-clone-node-production.up.railway.app/checkPremium/${friendId}`)
+  //       const res=await axios.get(`${apilink}/checkPremium/${friendId}`)
   //     console.log(res.data)
   //     if(res.data.status)
   //     {
@@ -94,9 +89,7 @@ const CenterChat = ({
       text: newMessage,
     };
 
-    socket.current = io(
-      'https://whatsapp-clone-socket-production.up.railway.app'
-    );
+    socket.current = io('https://whatsapp-socket-zk5r.onrender.com');
     socket.current.emit('addUser', whatsappId);
     // console.log(user.phone)
     socket.current.emit('sendMessage', {
@@ -110,10 +103,7 @@ const CenterChat = ({
     });
 
     try {
-      const res = await axios.post(
-        'https://whatsapp-clone-node-production.up.railway.app/sendconv',
-        message
-      );
+      const res = await axios.post(`${apilink}/sendconv`, message);
       setConversationMsg([...conversationmsg, res.data]);
       // getConversionMsg()
       // console.log(conversationmsg)
@@ -163,9 +153,7 @@ const CenterChat = ({
           .then((response) => {
             const oneimg = response.data.secure_url;
 
-            socket.current = io(
-              'https://whatsapp-clone-socket-production.up.railway.app'
-            );
+            socket.current = io('https://whatsapp-socket-zk5r.onrender.com');
             socket.current.emit('addUser', whatsappId);
             socket.current.emit('sendMessage', {
               senderId: whatsappId,
@@ -178,14 +166,11 @@ const CenterChat = ({
             });
 
             axios
-              .post(
-                'https://whatsapp-clone-node-production.up.railway.app/uploadpost',
-                {
-                  conversationId: conversationId,
-                  senderId: whatsappId,
-                  imgtext: oneimg,
-                }
-              )
+              .post(`${apilink}/uploadpost`, {
+                conversationId: conversationId,
+                senderId: whatsappId,
+                imgtext: oneimg,
+              })
               .then((res) => {
                 if (res.data) {
                   setConversationMsg([...conversationmsg, res.data]);
@@ -222,9 +207,7 @@ const CenterChat = ({
       text: newMessage,
     };
 
-    socket.current = io(
-      'https://whatsapp-clone-socket-production.up.railway.app'
-    );
+    socket.current = io('https://whatsapp-socket-zk5r.onrender.com');
     socket.current.emit('addUser', whatsappId);
     socket.current.emit('sendgpMessage', {
       senderId: whatsappId,
@@ -234,10 +217,7 @@ const CenterChat = ({
     });
 
     try {
-      const res = await axios.post(
-        'https://whatsapp-clone-node-production.up.railway.app/uploadgppost',
-        message
-      );
+      const res = await axios.post(`${apilink}/uploadgppost`, message);
       if (res.data) {
         // setGpConversationMsg([...gpconversationmsg, res.data]);
 
@@ -276,9 +256,7 @@ const CenterChat = ({
           .then((response) => {
             const oneimg = response.data.secure_url;
 
-            socket.current = io(
-              'https://whatsapp-clone-socket-production.up.railway.app'
-            );
+            socket.current = io('https://whatsapp-socket-zk5r.onrender.com');
             socket.current.emit('addUser', whatsappId);
             socket.current.emit('sendgpMessage', {
               senderId: whatsappId,
@@ -288,14 +266,11 @@ const CenterChat = ({
             });
 
             axios
-              .post(
-                'https://whatsapp-clone-node-production.up.railway.app/uploadgppost',
-                {
-                  gpId: gpId,
-                  senderId: whatsappId,
-                  imgtext: oneimg,
-                }
-              )
+              .post(`${apilink}/uploadgppost`, {
+                gpId: gpId,
+                senderId: whatsappId,
+                imgtext: oneimg,
+              })
               .then((res) => {
                 if (res.data) {
                   // setGpConversationMsg([...gpconversationmsg, res.data]);
@@ -314,9 +289,7 @@ const CenterChat = ({
   };
 
   const getOneGp = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/gpById/${gpId}`
-    );
+    const res = await axios.get(`${apilink}/gpById/${gpId}`);
 
     setUsergp(res.data);
   };

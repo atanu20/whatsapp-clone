@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
+import { apilink } from '../../data/fdata';
 
 const LeftUsers = ({
   setGpId,
@@ -18,9 +19,7 @@ const LeftUsers = ({
 
     const getUser = async () => {
       try {
-        let res = await axios.get(
-          `https://whatsapp-clone-node-production.up.railway.app/userById/${friendId}`
-        );
+        let res = await axios.get(`${apilink}/userById/${friendId}`);
 
         //   console.log(res.data)
 

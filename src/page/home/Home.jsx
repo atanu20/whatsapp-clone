@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { FromContext } from '../../component/FromContext';
 import { io } from 'socket.io-client';
 import { saveAs } from 'file-saver';
+import { apilink } from '../../data/fdata';
 
 const Home = () => {
   const [show, setShow] = useState(false);
@@ -30,16 +31,12 @@ const Home = () => {
 
   const socket = useRef();
   useEffect(() => {
-    socket.current = io(
-      'https://whatsapp-clone-socket-production.up.railway.app/'
-    );
+    socket.current = io('https://whatsapp-socket-zk5r.onrender.com/');
   }, []);
   useEffect(() => {
     socket.current?.emit('addUser', account.userID);
     socket.current?.on('getUsers', async (users) => {
-      const res = await axios.get(
-        `https://whatsapp-clone-node-production.up.railway.app/alluser`
-      );
+      const res = await axios.get(`${apilink}/alluser`);
       //  console.log(res.data.filter((val) => users.some((u) => u.userId === val.userID)))
       setOnlineUser(
         res.data.filter((val) => users.some((u) => u.userId === val._id))
@@ -48,9 +45,7 @@ const Home = () => {
   }, []);
 
   const checkPremium = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/checkPremium/${account.userID}`
-    );
+    const res = await axios.get(`${apilink}/checkPremium/${account.userID}`);
 
     if (res.data.status) {
       setStar(true);
@@ -65,24 +60,18 @@ const Home = () => {
 
   const his = useHistory();
   const getmyConv = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/conversation/${account.userID}`
-    );
+    const res = await axios.get(`${apilink}/conversation/${account.userID}`);
     //    console.log(res.data)
     setLeftConv(res.data);
   };
   const getAllConv = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/conversationmsg/${conversationId}`
-    );
+    const res = await axios.get(`${apilink}/conversationmsg/${conversationId}`);
     setConversationMsg(res.data);
     // setLeftConv(res.data)
   };
 
   const getConversionMembers = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/conversationid/${conversationId}`
-    );
+    const res = await axios.get(`${apilink}/conversationid/${conversationId}`);
     // console.log(res.data)
     setConversionMembers(res.data);
   };
@@ -140,18 +129,14 @@ const Home = () => {
 
   const download = async () => {
     setDownShow(true);
-    const res = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/create-pdf',
-      {
-        conversationId,
-        sendId: account.userID,
-      }
-    );
+    const res = await axios.post(`${apilink}/create-pdf`, {
+      conversationId,
+      sendId: account.userID,
+    });
     if (res.data.status) {
-      const ress = await axios.get(
-        `https://whatsapp-clone-node-production.up.railway.app/fetch-pdf/${account.userID}`,
-        { responseType: 'blob' }
-      );
+      const ress = await axios.get(`${apilink}/fetch-pdf/${account.userID}`, {
+        responseType: 'blob',
+      });
       if (ress) {
         const pdfBlob = new Blob([ress.data], { type: 'application/pdf' });
 
@@ -194,9 +179,7 @@ const Home = () => {
   }, [gparrivalMessage]);
 
   const getgpmsg = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/gpmsgById/${gpId}`
-    );
+    const res = await axios.get(`${apilink}/gpmsgById/${gpId}`);
     setGpConversationMsg(res.data);
   };
 

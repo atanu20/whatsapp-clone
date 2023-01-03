@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { FromContext } from '../../component/FromContext';
 import axios from 'axios';
+import { apilink } from '../../data/fdata';
 const Premium = () => {
   const [account] = useContext(FromContext);
   const [show, setshow] = useState(false);
@@ -21,10 +22,7 @@ const Premium = () => {
       price: '50.00',
     };
 
-    const res = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/buynow',
-      data
-    );
+    const res = await axios.post(`${apilink}/buynow`, data);
 
     if (res.data.success) {
       localStorage.setItem('whatsappID', account.userID);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { apilink } from '../../data/fdata';
 
 const Profile = ({ conversation, whatsappId, getmyConv }) => {
   const [user, setUser] = useState([]);
@@ -8,9 +9,7 @@ const Profile = ({ conversation, whatsappId, getmyConv }) => {
 
     const getUser = async () => {
       try {
-        let res = await axios.get(
-          `https://whatsapp-clone-node-production.up.railway.app/userById/${friendId}`
-        );
+        let res = await axios.get(`${apilink}/userById/${friendId}`);
 
         //   console.log(res.data)
 
@@ -24,9 +23,7 @@ const Profile = ({ conversation, whatsappId, getmyConv }) => {
 
   const handelclick = async () => {
     //    console.log(conversation._id)
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/updateById/${conversation._id}`
-    );
+    const res = await axios.get(`${apilink}/updateById/${conversation._id}`);
     // console.log(res.data)
     getmyConv();
   };

@@ -6,6 +6,7 @@ import { FromContext } from '../../component/FromContext';
 import './Login.css';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { apilink } from '../../data/fdata';
 
 const Login = () => {
   const his = useHistory();
@@ -20,10 +21,7 @@ const Login = () => {
       imageUrl: res.profileObj.imageUrl,
     };
 
-    const result = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/register',
-      data
-    );
+    const result = await axios.post(`${apilink}/register`, data);
     if (result.data) {
       localStorage.setItem('whatsappToken', result.data.token);
       setAccount(result.data);

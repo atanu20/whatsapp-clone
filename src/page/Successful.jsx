@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { FromContext } from '../component/FromContext';
 import axios from 'axios';
+import { apilink } from '../data/fdata';
 
 const Successful = () => {
   const history = useHistory();
@@ -19,10 +20,7 @@ const Successful = () => {
         userId: userid,
         pyid: pyid,
       };
-      const res = await axios.post(
-        `https://whatsapp-clone-node-production.up.railway.app/paydetails`,
-        data
-      );
+      const res = await axios.post(`${apilink}/paydetails`, data);
       //    console.log(his)
       console.log(res.data);
     };
