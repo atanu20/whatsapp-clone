@@ -4,6 +4,7 @@ import { FromContext } from '../../component/FromContext';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import Profile from './Profile';
+import { apilink } from '../../data/fdata';
 
 const ProfileLogin = () => {
   const [account, setAccount] = useContext(FromContext);
@@ -20,9 +21,7 @@ const ProfileLogin = () => {
   const his = useHistory();
 
   const checkPremium = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/checkPremium/${account.userID}`
-    );
+    const res = await axios.get(`${apilink}/checkPremium/${account.userID}`);
 
     if (res.data.status) {
       setStar(true);
@@ -40,9 +39,7 @@ const ProfileLogin = () => {
   }
 
   const getmyConv = async () => {
-    const res = await axios.get(
-      `https://whatsapp-clone-node-production.up.railway.app/conversations/${account.userID}`
-    );
+    const res = await axios.get(`${apilink}/conversations/${account.userID}`);
     //    console.log(res.data)
     setLeftConv(res.data);
   };
@@ -58,10 +55,7 @@ const ProfileLogin = () => {
       password: password,
     };
     // console.log(data)
-    const res = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/profile-register',
-      data
-    );
+    const res = await axios.post(`${apilink}/profile-register`, data);
     // console.log(res.data)
     if (res.data.status) {
       setloginShow(true);
@@ -73,13 +67,10 @@ const ProfileLogin = () => {
 
   const updateph = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      'https://whatsapp-clone-node-production.up.railway.app/updateph',
-      {
-        phone: phone,
-        userid: account.userID,
-      }
-    );
+    const res = await axios.post(`${apilink}/updateph`, {
+      phone: phone,
+      userid: account.userID,
+    });
     setAccount({
       ...account,
       phone: phone,

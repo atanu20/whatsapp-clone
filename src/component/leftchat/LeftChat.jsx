@@ -6,6 +6,7 @@ import { GoogleLogout } from 'react-google-login';
 import { FromContext } from '../../component/FromContext';
 import LeftUsers from './LeftUsers';
 import axios from 'axios';
+import { apilink } from '../../data/fdata';
 
 const LeftChat = ({
   star,
@@ -26,9 +27,7 @@ const LeftChat = ({
   }
 
   const getgp = async () => {
-    const res = await axios.get(
-      'https://whatsapp-clone-node-production.up.railway.app/allgp'
-    );
+    const res = await axios.get(`${apilink}/allgp`);
     setAllGp(res.data);
   };
 
